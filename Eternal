@@ -1,0 +1,675 @@
+local EternalUI = {}
+
+-- Theme colors
+local Themes = {
+    ["Midnight"] = {
+        Main = Color3.fromRGB(21, 18, 27),
+        Stroke = Color3.fromRGB(9, 191, 167),
+        Secondary = Color3.fromRGB(33, 30, 38),
+        Accent = Color3.fromRGB(9, 191, 167),
+        Text = Color3.fromRGB(255, 255, 255)
+    },
+    ["Purple"] = {
+        Main = Color3.fromRGB(30, 20, 40),
+        Stroke = Color3.fromRGB(170, 85, 255),
+        Secondary = Color3.fromRGB(45, 35, 55),
+        Accent = Color3.fromRGB(170, 85, 255),
+        Text = Color3.fromRGB(255, 255, 255)
+    },
+    ["Abyss"] = {
+        Main = Color3.fromRGB(10, 10, 20),
+        Stroke = Color3.fromRGB(0, 150, 255),
+        Secondary = Color3.fromRGB(20, 20, 30),
+        Accent = Color3.fromRGB(0, 150, 255),
+        Text = Color3.fromRGB(255, 255, 255)
+    },
+    ["Green Light"] = {
+        Main = Color3.fromRGB(30, 40, 30),
+        Stroke = Color3.fromRGB(100, 255, 100),
+        Secondary = Color3.fromRGB(40, 50, 40),
+        Accent = Color3.fromRGB(100, 255, 100),
+        Text = Color3.fromRGB(255, 255, 255)
+    }
+}
+
+function EternalUI:CreateWindow(config)
+    config = config or {}
+    local theme = Themes[config.Theme or "Midnight"] or Themes["Midnight"]
+    
+    local UI = {}
+    UI.Theme = theme
+    
+    -- Main ScreenGui
+    UI.ScreenGui = Instance.new("ScreenGui")
+    UI.ScreenGui.Name = "Eternal"
+    UI.ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    UI.ScreenGui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+
+    -- Main Frame
+    UI.MainFrame = Instance.new("Frame")
+    UI.MainFrame.BorderSizePixel = 0
+    UI.MainFrame.BackgroundColor3 = theme.Main
+    UI.MainFrame.Size = UDim2.new(0, 500, 0, 388)
+    UI.MainFrame.Position = config.Position or UDim2.new(0.36619, 0, 0.33092, 0)
+    UI.MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    UI.MainFrame.Parent = UI.ScreenGui
+
+    -- UI Stroke
+    local UIStroke = Instance.new("UIStroke", UI.MainFrame)
+    UIStroke.Thickness = 1.5
+    UIStroke.Color = theme.Stroke
+
+    -- UICorner
+    local UICorner = Instance.new("UICorner", UI.MainFrame)
+    UICorner.CornerRadius = UDim.new(0, 3)
+
+    -- Title Holder
+    UI.TitleHolder = Instance.new("Frame")
+    UI.TitleHolder.BorderSizePixel = 0
+    UI.TitleHolder.BackgroundColor3 = theme.Main
+    UI.TitleHolder.Size = UDim2.new(0, 500, 0, 23)
+    UI.TitleHolder.Position = UDim2.new(-0.00181, 0, -0.09812, 0)
+    UI.TitleHolder.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    UI.TitleHolder.Name = "TitleHolder"
+    UI.TitleHolder.Parent = UI.MainFrame
+
+    local TitleUIStroke = Instance.new("UIStroke", UI.TitleHolder)
+    TitleUIStroke.Thickness = 1.5
+    TitleUIStroke.Color = theme.Stroke
+
+    UI.TitleLabel = Instance.new("TextLabel", UI.TitleHolder)
+    UI.TitleLabel.BorderSizePixel = 0
+    UI.TitleLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    UI.TitleLabel.TextSize = 14
+    UI.TitleLabel.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    UI.TitleLabel.TextColor3 = theme.Text
+    UI.TitleLabel.BackgroundTransparency = 1
+    UI.TitleLabel.Size = UDim2.new(0, 499, 0, 23)
+    UI.TitleLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    UI.TitleLabel.Text = config.Title or "Eternal UI"
+    
+    local TitleUICorner = Instance.new("UICorner", UI.TitleHolder)
+    TitleUICorner.CornerRadius = UDim.new(0, 3)
+
+    -- Status bars
+    UI.PltStatus1 = Instance.new("Frame")
+    UI.PltStatus1.BorderSizePixel = 0
+    UI.PltStatus1.BackgroundColor3 = theme.Secondary
+    UI.PltStatus1.Size = UDim2.new(0, 232, 0, 28)
+    UI.PltStatus1.Position = UDim2.new(0.036, 0, 0.03351, 0)
+    UI.PltStatus1.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    UI.PltStatus1.Name = "PltStatus"
+    UI.PltStatus1.Parent = UI.MainFrame
+
+    local Status1UIStroke = Instance.new("UIStroke", UI.PltStatus1)
+    Status1UIStroke.Thickness = 1.5
+    Status1UIStroke.Color = Color3.fromRGB(44, 44, 44)
+
+    UI.PingLabel = Instance.new("TextLabel", UI.PltStatus1)
+    UI.PingLabel.BorderSizePixel = 0
+    UI.PingLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    UI.PingLabel.TextSize = 14
+    UI.PingLabel.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    UI.PingLabel.TextColor3 = theme.Accent
+    UI.PingLabel.BackgroundTransparency = 1
+    UI.PingLabel.Size = UDim2.new(0, 231, 0, 28)
+    UI.PingLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    UI.PingLabel.Text = "Ping: 0ms"
+
+    UI.PltStatus2 = Instance.new("Frame")
+    UI.PltStatus2.BorderSizePixel = 0
+    UI.PltStatus2.BackgroundColor3 = theme.Secondary
+    UI.PltStatus2.Size = UDim2.new(0, 232, 0, 28)
+    UI.PltStatus2.Position = UDim2.new(0.5, 0, 0.03351, 0)
+    UI.PltStatus2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    UI.PltStatus2.Name = "PltStatus"
+    UI.PltStatus2.Parent = UI.MainFrame
+
+    local Status2UIStroke = Instance.new("UIStroke", UI.PltStatus2)
+    Status2UIStroke.Thickness = 1.5
+    Status2UIStroke.Color = Color3.fromRGB(44, 44, 44)
+
+    UI.StatusLabel = Instance.new("TextLabel", UI.PltStatus2)
+    UI.StatusLabel.TextWrapped = true
+    UI.StatusLabel.BorderSizePixel = 0
+    UI.StatusLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    UI.StatusLabel.TextSize = 14
+    UI.StatusLabel.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    UI.StatusLabel.TextColor3 = theme.Text
+    UI.StatusLabel.BackgroundTransparency = 1
+    UI.StatusLabel.Size = UDim2.new(0, 232, 0, 28)
+    UI.StatusLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    UI.StatusLabel.Text = config.Status or "Ready"
+
+    -- Tab system
+    UI.Tabs = {}
+    UI.CurrentTab = nil
+
+    -- Make window draggable
+    local UserInputService = game:GetService("UserInputService")
+    local dragging
+    local dragInput
+    local dragStart
+    local startPos
+
+    local function update(input)
+        local delta = input.Position - dragStart
+        UI.MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+
+    UI.TitleHolder.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = UI.MainFrame.Position
+            
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    UI.TitleHolder.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            update(input)
+        end
+    end)
+
+    -- Update ping
+    spawn(function()
+        while wait(1) do
+            local ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue())
+            UI.PingLabel.Text = "Ping: "..ping.."ms"
+        end
+    end)
+
+    -- Function to create a new tab
+    function UI:CreateTab(name)
+        local tab = {}
+        tab.Name = name
+        
+        -- Create button for the tab
+        tab.Button = Instance.new("TextButton")
+        tab.Button.BorderSizePixel = 0
+        tab.Button.TextSize = 14
+        tab.Button.TextColor3 = theme.Text
+        tab.Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        tab.Button.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+        tab.Button.Size = UDim2.new(0, 114, 0, 28)
+        tab.Button.BackgroundTransparency = 1
+        tab.Button.Name = "Btn"..(#UI.Tabs + 1)
+        tab.Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        tab.Button.Text = name
+        tab.Button.Parent = UI.MainFrame
+        
+        -- Position the button
+        if #UI.Tabs == 0 then
+            tab.Button.Position = UDim2.new(0.036, 0, 0.89948, 0)
+        elseif #UI.Tabs == 1 then
+            tab.Button.Position = UDim2.new(0.272, 0, 0.89948, 0)
+        elseif #UI.Tabs == 2 then
+            tab.Button.Position = UDim2.new(0.5, 0, 0.89948, 0)
+        elseif #UI.Tabs == 3 then
+            tab.Button.Position = UDim2.new(0.74, 0, 0.89948, 0)
+        else
+            -- If more than 4 tabs, stack them vertically
+            tab.Button.Position = UDim2.new(0.036, 0, 0.89948 + (0.1 * (#UI.Tabs - 3)), 0)
+        end
+        
+        -- Create the content frame for the tab
+        tab.Frame = Instance.new("Frame")
+        tab.Frame.BorderSizePixel = 0
+        tab.Frame.BackgroundColor3 = theme.Secondary
+        tab.Frame.Size = UDim2.new(0, 467, 0, 285)
+        tab.Frame.Position = UDim2.new(0.034, 0, 0.13144, 0)
+        tab.Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        tab.Frame.Name = name.."UI"
+        tab.Frame.BackgroundTransparency = 1
+        tab.Frame.Parent = UI.MainFrame
+        
+        local FrameUICorner = Instance.new("UICorner", tab.Frame)
+        FrameUICorner.CornerRadius = UDim.new(0, 3)
+        
+        local FrameUIStroke = Instance.new("UIStroke", tab.Frame)
+        FrameUIStroke.Thickness = 1.5
+        FrameUIStroke.Color = Color3.fromRGB(44, 44, 44)
+        
+        -- Hide by default
+        tab.Frame.Visible = false
+        
+        -- Button click event
+        tab.Button.MouseButton1Click:Connect(function()
+            for _, otherTab in pairs(UI.Tabs) do
+                otherTab.Frame.Visible = false
+                otherTab.Button.TextColor3 = theme.Text
+            end
+            tab.Frame.Visible = true
+            tab.Button.TextColor3 = theme.Accent
+            UI.CurrentTab = tab
+        end)
+        
+        -- Create a scrolling frame for the tab content
+        tab.ScrollingFrame = Instance.new("ScrollingFrame")
+        tab.ScrollingFrame.Active = true
+        tab.ScrollingFrame.BorderSizePixel = 0
+        tab.ScrollingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        tab.ScrollingFrame.Size = UDim2.new(0, 467, 0, 285)
+        tab.ScrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(0, 0, 0)
+        tab.ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+        tab.ScrollingFrame.BackgroundTransparency = 1
+        tab.ScrollingFrame.Parent = tab.Frame
+        
+        local ScrollingUIListLayout = Instance.new("UIListLayout", tab.ScrollingFrame)
+        ScrollingUIListLayout.Padding = UDim.new(0, 5)
+        ScrollingUIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+        
+        -- Function to create a section
+        function tab:CreateSection(name)
+            local section = {}
+            section.Name = name
+            
+            local SectionFrame = Instance.new("Frame")
+            SectionFrame.BorderSizePixel = 0
+            SectionFrame.BackgroundColor3 = theme.Secondary
+            SectionFrame.Size = UDim2.new(0, 440, 0, 30)
+            SectionFrame.Parent = self.ScrollingFrame
+            
+            local SectionUICorner = Instance.new("UICorner", SectionFrame)
+            SectionUICorner.CornerRadius = UDim.new(0, 3)
+            
+            local SectionUIStroke = Instance.new("UIStroke", SectionFrame)
+            SectionUIStroke.Thickness = 1.5
+            SectionUIStroke.Color = Color3.fromRGB(44, 44, 44)
+            
+            local SectionTitle = Instance.new("TextLabel", SectionFrame)
+            SectionTitle.BorderSizePixel = 0
+            SectionTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            SectionTitle.TextSize = 14
+            SectionTitle.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+            SectionTitle.TextColor3 = theme.Text
+            SectionTitle.BackgroundTransparency = 1
+            SectionTitle.Size = UDim2.new(0, 200, 0, 30)
+            SectionTitle.Position = UDim2.new(0.05, 0, 0, 0)
+            SectionTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            SectionTitle.Text = name
+            
+            section.ContentFrame = Instance.new("Frame")
+            section.ContentFrame.BorderSizePixel = 0
+            section.ContentFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            section.ContentFrame.Size = UDim2.new(0, 440, 0, 0)
+            section.ContentFrame.Position = UDim2.new(0, 0, 1, 5)
+            section.ContentFrame.BackgroundTransparency = 1
+            section.ContentFrame.Parent = SectionFrame
+            
+            local ContentUIListLayout = Instance.new("UIListLayout", section.ContentFrame)
+            ContentUIListLayout.Padding = UDim.new(0, 5)
+            ContentUIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+            
+            -- Function to create a toggle
+            function section:CreateToggle(name, callback)
+                local toggle = {}
+                toggle.Name = name
+                toggle.Value = false
+                
+                local ToggleFrame = Instance.new("Frame")
+                ToggleFrame.BorderSizePixel = 0
+                ToggleFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                ToggleFrame.Size = UDim2.new(0, 440, 0, 20)
+                ToggleFrame.BackgroundTransparency = 1
+                ToggleFrame.Parent = self.ContentFrame
+                
+                local ToggleButton = Instance.new("TextButton")
+                ToggleButton.BorderSizePixel = 0
+                ToggleButton.TextSize = 14
+                ToggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+                ToggleButton.BackgroundColor3 = theme.Main
+                ToggleButton.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+                ToggleButton.Size = UDim2.new(0, 18, 0, 18)
+                ToggleButton.Position = UDim2.new(0.05, 0, 0, 0)
+                ToggleButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                ToggleButton.Text = ""
+                ToggleButton.Parent = ToggleFrame
+                
+                local ToggleUICorner = Instance.new("UICorner", ToggleButton)
+                ToggleUICorner.CornerRadius = UDim.new(0, 3)
+                
+                local ToggleUIStroke = Instance.new("UIStroke", ToggleButton)
+                ToggleUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                ToggleUIStroke.Thickness = 1.5
+                ToggleUIStroke.Color = Color3.fromRGB(44, 44, 44)
+                
+                local ToggleText = Instance.new("TextLabel", ToggleFrame)
+                ToggleText.BorderSizePixel = 0
+                ToggleText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                ToggleText.TextSize = 14
+                ToggleText.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+                ToggleText.TextColor3 = theme.Text
+                ToggleText.BackgroundTransparency = 1
+                ToggleText.Size = UDim2.new(0, 200, 0, 18)
+                ToggleText.Position = UDim2.new(0.15, 0, 0, 0)
+                ToggleText.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                ToggleText.Text = name
+                ToggleText.TextXAlignment = Enum.TextXAlignment.Left
+                
+                ToggleButton.MouseButton1Click:Connect(function()
+                    toggle.Value = not toggle.Value
+                    if toggle.Value then
+                        ToggleButton.BackgroundColor3 = theme.Accent
+                    else
+                        ToggleButton.BackgroundColor3 = theme.Main
+                    end
+                    if callback then callback(toggle.Value) end
+                end)
+                
+                return toggle
+            end
+            
+            -- Function to create a slider
+            function section:CreateSlider(name, min, max, defaultValue, callback)
+                local slider = {}
+                slider.Name = name
+                slider.Value = defaultValue or min
+                
+                local SliderFrame = Instance.new("Frame")
+                SliderFrame.BorderSizePixel = 0
+                SliderFrame.BackgroundColor3 = theme.Main
+                SliderFrame.Size = UDim2.new(0, 440, 0, 40)
+                SliderFrame.Parent = self.ContentFrame
+                
+                local SliderUICorner = Instance.new("UICorner", SliderFrame)
+                SliderUICorner.CornerRadius = UDim.new(0, 3)
+                
+                local SliderUIStroke = Instance.new("UIStroke", SliderFrame)
+                SliderUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                SliderUIStroke.Thickness = 1.5
+                SliderUIStroke.Color = Color3.fromRGB(44, 44, 44)
+                
+                local SliderTitle = Instance.new("TextLabel", SliderFrame)
+                SliderTitle.BorderSizePixel = 0
+                SliderTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                SliderTitle.TextSize = 14
+                SliderTitle.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+                SliderTitle.TextColor3 = theme.Text
+                SliderTitle.BackgroundTransparency = 1
+                SliderTitle.Size = UDim2.new(0, 200, 0, 20)
+                SliderTitle.Position = UDim2.new(0.05, 0, 0, 0)
+                SliderTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                SliderTitle.Text = name
+                SliderTitle.TextXAlignment = Enum.TextXAlignment.Left
+                
+                local SliderBar = Instance.new("Frame", SliderFrame)
+                SliderBar.BorderSizePixel = 0
+                SliderBar.BackgroundColor3 = theme.Main
+                SliderBar.Size = UDim2.new(0, 400, 0, 10)
+                SliderBar.Position = UDim2.new(0.05, 0, 0.6, 0)
+                
+                local SliderBarUICorner = Instance.new("UICorner", SliderBar)
+                SliderBarUICorner.CornerRadius = UDim.new(0, 3)
+                
+                local SliderBarUIStroke = Instance.new("UIStroke", SliderBar)
+                SliderBarUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                SliderBarUIStroke.Thickness = 1.5
+                SliderBarUIStroke.Color = Color3.fromRGB(44, 44, 44)
+                
+                local SliderButton = Instance.new("TextButton", SliderBar)
+                SliderButton.BorderSizePixel = 0
+                SliderButton.TextSize = 14
+                SliderButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+                SliderButton.BackgroundColor3 = theme.Accent
+                SliderButton.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+                SliderButton.Size = UDim2.new(0, 15, 0, 10)
+                SliderButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                SliderButton.Text = ""
+                SliderButton.ZIndex = 2
+                
+                local SliderButtonUICorner = Instance.new("UICorner", SliderButton)
+                SliderButtonUICorner.CornerRadius = UDim.new(0, 3)
+                
+                local SliderButtonUIStroke = Instance.new("UIStroke", SliderButton)
+                SliderButtonUIStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+                SliderButtonUIStroke.Thickness = 1.5
+                SliderButtonUIStroke.Color = Color3.fromRGB(44, 44, 44)
+                
+                local SliderValue = Instance.new("TextLabel", SliderFrame)
+                SliderValue.BorderSizePixel = 0
+                SliderValue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                SliderValue.TextSize = 14
+                SliderValue.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+                SliderValue.TextColor3 = theme.Text
+                SliderValue.BackgroundTransparency = 1
+                SliderValue.Size = UDim2.new(0, 100, 0, 20)
+                SliderValue.Position = UDim2.new(0.75, 0, 0, 0)
+                SliderValue.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                SliderValue.Text = tostring(defaultValue or min)
+                SliderValue.TextXAlignment = Enum.TextXAlignment.Right
+                
+                -- Set initial position
+                local initialScale = (defaultValue - min) / (max - min)
+                SliderButton.Position = UDim2.new(initialScale, -7.5, 0, 0)
+                
+                local dragging = false
+                
+                local function updateSlider(input)
+                    local pos = UDim2.new(
+                        math.clamp((input.Position.X - SliderBar.AbsolutePosition.X) / SliderBar.AbsoluteSize.X, 0, 1),
+                        0,
+                        0,
+                        0
+                    )
+                    SliderButton.Position = UDim2.new(pos.X.Scale, -7.5, 0, 0)
+                    local value = math.floor(((pos.X.Scale * (max - min)) + min))
+                    SliderValue.Text = tostring(value)
+                    slider.Value = value
+                    if callback then callback(value) end
+                end
+                
+                SliderButton.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        dragging = true
+                    end
+                end)
+                
+                SliderButton.InputEnded:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        dragging = false
+                    end
+                end)
+                
+                SliderBar.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        updateSlider(input)
+                    end
+                end)
+                
+                game:GetService("UserInputService").InputChanged:Connect(function(input)
+                    if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+                        updateSlider(input)
+                    end
+                end)
+                
+                return slider
+            end
+            
+            -- Function to create a button
+            function section:CreateButton(name, callback)
+                local button = {}
+                button.Name = name
+                
+                local ButtonFrame = Instance.new("TextButton")
+                ButtonFrame.BorderSizePixel = 0
+                ButtonFrame.TextSize = 14
+                ButtonFrame.TextColor3 = theme.Text
+                ButtonFrame.BackgroundColor3 = theme.Main
+                ButtonFrame.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+                ButtonFrame.Size = UDim2.new(0, 400, 0, 28)
+                ButtonFrame.Position = UDim2.new(0.05, 0, 0, 0)
+                ButtonFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                ButtonFrame.Text = name
+                ButtonFrame.Parent = self.ContentFrame
+                
+                local ButtonUICorner = Instance.new("UICorner", ButtonFrame)
+                ButtonUICorner.CornerRadius = UDim.new(0, 3)
+                
+                local ButtonUIStroke = Instance.new("UIStroke", ButtonFrame)
+                ButtonUIStroke.Thickness = 1.5
+                ButtonUIStroke.Color = Color3.fromRGB(44, 44, 44)
+                
+                ButtonFrame.MouseButton1Click:Connect(function()
+                    if callback then callback() end
+                end)
+                
+                return button
+            end
+            
+            -- Function to create a dropdown
+            function section:CreateDropdown(name, options, callback)
+                local dropdown = {}
+                dropdown.Name = name
+                dropdown.Options = options
+                dropdown.Value = nil
+                dropdown.Open = false
+                
+                local DropdownFrame = Instance.new("Frame")
+                DropdownFrame.BorderSizePixel = 0
+                DropdownFrame.BackgroundColor3 = theme.Main
+                DropdownFrame.Size = UDim2.new(0, 400, 0, 28)
+                DropdownFrame.Position = UDim2.new(0.05, 0, 0, 0)
+                DropdownFrame.Parent = self.ContentFrame
+                
+                local DropdownUICorner = Instance.new("UICorner", DropdownFrame)
+                DropdownUICorner.CornerRadius = UDim.new(0, 3)
+                
+                local DropdownUIStroke = Instance.new("UIStroke", DropdownFrame)
+                DropdownUIStroke.Thickness = 1.5
+                DropdownUIStroke.Color = Color3.fromRGB(44, 44, 44)
+                
+                local DropdownButton = Instance.new("TextButton", DropdownFrame)
+                DropdownButton.BorderSizePixel = 0
+                DropdownButton.TextSize = 14
+                DropdownButton.TextColor3 = theme.Text
+                DropdownButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                DropdownButton.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+                DropdownButton.Size = UDim2.new(0, 400, 0, 28)
+                DropdownButton.BackgroundTransparency = 1
+                DropdownButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                DropdownButton.Text = name
+                
+                local DropdownList = Instance.new("Frame", DropdownFrame)
+                DropdownList.BorderSizePixel = 0
+                DropdownList.BackgroundColor3 = theme.Secondary
+                DropdownList.Size = UDim2.new(0, 400, 0, 0)
+                DropdownList.Position = UDim2.new(0, 0, 1, 5)
+                DropdownList.ClipsDescendants = true
+                
+                local DropdownListUIStroke = Instance.new("UIStroke", DropdownList)
+                DropdownListUIStroke.Thickness = 1.5
+                DropdownListUIStroke.Color = Color3.fromRGB(44, 44, 44)
+                
+                local DropdownListUICorner = Instance.new("UICorner", DropdownList)
+                DropdownListUICorner.CornerRadius = UDim.new(0, 3)
+                
+                local DropdownListLayout = Instance.new("UIListLayout", DropdownList)
+                DropdownListLayout.Padding = UDim.new(0, 2)
+                
+                local function updateDropdown()
+                    if dropdown.Open then
+                        DropdownList.Size = UDim2.new(0, 400, 0, #options * 28)
+                    else
+                        DropdownList.Size = UDim2.new(0, 400, 0, 0)
+                    end
+                end
+                
+                DropdownButton.MouseButton1Click:Connect(function()
+                    dropdown.Open = not dropdown.Open
+                    updateDropdown()
+                end)
+                
+                for i, option in ipairs(options) do
+                    local OptionButton = Instance.new("TextButton", DropdownList)
+                    OptionButton.BorderSizePixel = 0
+                    OptionButton.TextSize = 14
+                    OptionButton.TextColor3 = theme.Text
+                    OptionButton.BackgroundColor3 = theme.Main
+                    OptionButton.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+                    OptionButton.Size = UDim2.new(0, 400, 0, 28)
+                    OptionButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                    OptionButton.Text = option
+                    
+                    OptionButton.MouseButton1Click:Connect(function()
+                        dropdown.Value = option
+                        DropdownButton.Text = name .. ": " .. option
+                        dropdown.Open = false
+                        updateDropdown()
+                        if callback then callback(option) end
+                    end)
+                end
+                
+                updateDropdown()
+                
+                return dropdown
+            end
+            
+            return section
+        end
+        
+        -- Add to tabs table
+        table.insert(UI.Tabs, tab)
+        
+        -- If this is the first tab, make it active
+        if #UI.Tabs == 1 then
+            tab.Frame.Visible = true
+            tab.Button.TextColor3 = theme.Accent
+            UI.CurrentTab = tab
+        end
+        
+        return tab
+    end
+    
+    -- Function to update status
+    function UI:UpdateStatus(text)
+        self.StatusLabel.Text = text
+    end
+    
+    -- Function to change theme
+    function UI:SetTheme(themeName)
+        local newTheme = Themes[themeName] or Themes["Midnight"]
+        self.Theme = newTheme
+        
+        -- Update all elements with new theme
+        self.MainFrame.BackgroundColor3 = newTheme.Main
+        self.TitleHolder.BackgroundColor3 = newTheme.Main
+        self.PltStatus1.BackgroundColor3 = newTheme.Secondary
+        self.PltStatus2.BackgroundColor3 = newTheme.Secondary
+        
+        local stroke = UIStroke.new(self.MainFrame)
+        stroke.Color = newTheme.Stroke
+        stroke.Thickness = 1.5
+        
+        local titleStroke = UIStroke.new(self.TitleHolder)
+        titleStroke.Color = newTheme.Stroke
+        titleStroke.Thickness = 1.5
+        
+        self.TitleLabel.TextColor3 = newTheme.Text
+        self.PingLabel.TextColor3 = newTheme.Accent
+        self.StatusLabel.TextColor3 = newTheme.Text
+        
+        -- Update active tab button color
+        if self.CurrentTab then
+            self.CurrentTab.Button.TextColor3 = newTheme.Accent
+        end
+        
+        -- TODO: Update all other elements in tabs with new theme
+    end
+    
+    return UI
+end
+
+return EternalUI
