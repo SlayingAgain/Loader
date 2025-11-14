@@ -11,19 +11,105 @@ local HK2 = {
     }
 }
 
+local UI = {}
+
+UI["1"] = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"))
+UI["1"]["Name"] = "Hook"
+UI["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling
+
+UI["2"] = Instance.new("Frame", UI["1"])
+UI["2"]["BorderSizePixel"] = 0
+UI["2"]["BackgroundColor3"] = HK2.Config.BackgroundColor
+UI["2"]["Size"] = UDim2.new(0, 439, 0, 290)
+UI["2"]["Position"] = UDim2.new(0.43879, 0, 0.43949, 0)
+UI["2"]["BorderColor3"] = Color3.fromRGB(0, 0, 0)
+
+UI["3"] = Instance.new("UICorner", UI["2"])
+UI["3"]["Name"] = "FrameCorner"
+UI["3"]["CornerRadius"] = UDim.new(0, 5)
+
+UI["4"] = Instance.new("Frame", UI["2"])
+UI["4"]["BorderSizePixel"] = 0
+UI["4"]["BackgroundColor3"] = Color3.fromRGB(16, 16, 16)
+UI["4"]["Size"] = UDim2.new(0, 109, 0, 240)
+UI["4"]["Position"] = UDim2.new(0.03189, 0, 0.12414, 0)
+UI["4"]["BorderColor3"] = Color3.fromRGB(0, 0, 0)
+UI["4"]["Name"] = "DashBoard"
+
+UI["5"] = Instance.new("UICorner", UI["4"])
+UI["5"]["Name"] = "DashBoardCorner"
+UI["5"]["CornerRadius"] = UDim.new(0, 5)
+
+UI["6"] = Instance.new("Frame", UI["4"])
+UI["6"]["BorderSizePixel"] = 0
+UI["6"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["6"]["Size"] = UDim2.new(0, 97, 0, 225)
+UI["6"]["Position"] = UDim2.new(0.05505, 0, 0.03481, 0)
+UI["6"]["BorderColor3"] = Color3.fromRGB(0, 0, 0)
+UI["6"]["Name"] = "TabContainer"
+UI["6"]["BackgroundTransparency"] = 1
+
+UI["7"] = Instance.new("UIListLayout", UI["6"])
+UI["7"]["HorizontalAlignment"] = Enum.HorizontalAlignment.Center
+UI["7"]["Padding"] = UDim.new(0, 8)
+UI["7"]["SortOrder"] = Enum.SortOrder.LayoutOrder
+UI["7"]["Name"] = "TabContainer"
+
+UI["a"] = Instance.new("Frame", UI["4"])
+UI["a"]["BorderSizePixel"] = 0
+UI["a"]["BackgroundColor3"] = Color3.fromRGB(16, 16, 16)
+UI["a"]["Size"] = UDim2.new(0, 292, 0, 240)
+UI["a"]["Position"] = UDim2.new(1.06422, 0, 0, 0)
+UI["a"]["BorderColor3"] = Color3.fromRGB(0, 0, 0)
+UI["a"]["Name"] = "PageContainer"
+
+UI["b"] = Instance.new("UICorner", UI["a"])
+UI["b"]["Name"] = "PageContainerCorner"
+UI["b"]["CornerRadius"] = UDim.new(0, 6)
+
+UI["c"] = Instance.new("Folder", UI["a"])
+UI["c"]["Name"] = "PageFolder"
+
+UI["3d"] = Instance.new("Frame", UI["4"])
+UI["3d"]["BorderSizePixel"] = 0
+UI["3d"]["BackgroundColor3"] = Color3.fromRGB(16, 16, 16)
+UI["3d"]["Size"] = UDim2.new(0, 406, 0, 15)
+UI["3d"]["Position"] = UDim2.new(0.01835, 0, -0.10155, 0)
+UI["3d"]["BorderColor3"] = Color3.fromRGB(0, 0, 0)
+UI["3d"]["Name"] = "TitleContainer"
+
+UI["3e"] = Instance.new("UICorner", UI["3d"])
+UI["3e"]["Name"] = "TitleHolderCorner"
+UI["3e"]["CornerRadius"] = UDim.new(0, 5)
+
+UI["3f"] = Instance.new("TextLabel", UI["3d"])
+UI["3f"]["TextWrapped"] = true
+UI["3f"]["BorderSizePixel"] = 0
+UI["3f"]["TextXAlignment"] = Enum.TextXAlignment.Left
+UI["3f"]["TextScaled"] = true
+UI["3f"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255)
+UI["3f"]["TextSize"] = 14
+UI["3f"]["FontFace"] = Font.new("rbxasset://fonts/families/Ubuntu.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+UI["3f"]["TextColor3"] = HK2.Config.TitleColor
+UI["3f"]["BackgroundTransparency"] = 1
+UI["3f"]["Size"] = UDim2.new(0, 406, 0, 15)
+UI["3f"]["BorderColor3"] = Color3.fromRGB(0, 0, 0)
+UI["3f"]["Text"] = HK2.Config.Title
+UI["3f"]["Name"] = "Title"
+
 local UIS = game:GetService("UserInputService")
 local dragging, dragInput, dragStart, startPos
 
 local function UpdateDrag(input)
     local delta = input.Position - dragStart
-    MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    UI["2"].Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
 end
 
-MainFrame.InputBegan:Connect(function(input)
+UI["2"].InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 then
         dragging = true
         dragStart = input.Position
-        startPos = MainFrame.Position
+        startPos = UI["2"].Position
         
         input.Changed:Connect(function()
             if input.UserInputState == Enum.UserInputState.End then
@@ -33,7 +119,7 @@ MainFrame.InputBegan:Connect(function(input)
     end
 end)
 
-MainFrame.InputChanged:Connect(function(input)
+UI["2"].InputChanged:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseMovement then
         dragInput = input
     end
@@ -48,7 +134,7 @@ end)
 UIS.InputBegan:Connect(function(input)
     if input.KeyCode == Enum.KeyCode.LeftAlt then
         HK2.Open = not HK2.Open
-        MainFrame.Visible = HK2.Open
+        UI["2"].Visible = HK2.Open
     end
 end)
 
@@ -66,7 +152,7 @@ function HK2:CreateTab(tabName)
     TabButton.Name = tabName
     TabButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
     TabButton.Text = tabName
-    TabButton.Parent = TabContainer
+    TabButton.Parent = UI["6"]
     
     local TabCorner = Instance.new("UICorner")
     TabCorner.CornerRadius = UDim.new(0, 7)
@@ -85,7 +171,7 @@ function HK2:CreateTab(tabName)
     Page.ScrollBarThickness = 3
     Page.BackgroundTransparency = 1
     Page.Visible = false
-    Page.Parent = PageFolder
+    Page.Parent = UI["c"]
     
     local PageLayout = Instance.new("UIListLayout")
     PageLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
@@ -94,7 +180,7 @@ function HK2:CreateTab(tabName)
     PageLayout.Parent = Page
     
     TabButton.MouseButton1Click:Connect(function()
-        for _, page in pairs(PageFolder:GetChildren()) do
+        for _, page in pairs(UI["c"]:GetChildren()) do
             if page:IsA("ScrollingFrame") then
                 page.Visible = false
             end
@@ -103,7 +189,7 @@ function HK2:CreateTab(tabName)
         HK2.CurrentTab = tabName
     end)
     
-    if #PageFolder:GetChildren() == 1 then
+    if #UI["c"]:GetChildren() == 1 then
         Page.Visible = true
         HK2.CurrentTab = tabName
     end
@@ -317,17 +403,17 @@ end
 
 function HK2:SetTitle(newTitle)
     self.Config.Title = newTitle
-    Title.Text = newTitle
+    UI["3f"].Text = newTitle
 end
 
 function HK2:SetTitleColor(newColor)
     self.Config.TitleColor = newColor
-    Title.TextColor3 = newColor
+    UI["3f"].TextColor3 = newColor
 end
 
 function HK2:SetBackgroundColor(newColor)
     self.Config.BackgroundColor = newColor
-    MainFrame.BackgroundColor3 = newColor
+    UI["2"].BackgroundColor3 = newColor
 end
 
 function HK2:SetAccentColor(newColor)
@@ -338,95 +424,4 @@ function HK2:SetTextColor(newColor)
     self.Config.TextColor = newColor
 end
 
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "Hook"
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ScreenGui.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
-
-local MainFrame = Instance.new("Frame")
-MainFrame.BorderSizePixel = 0
-MainFrame.BackgroundColor3 = HK2.Config.BackgroundColor
-MainFrame.Size = UDim2.new(0, 439, 0, 290)
-MainFrame.Position = UDim2.new(0.43879, 0, 0.43949, 0)
-MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-MainFrame.Parent = ScreenGui
-
-local FrameCorner = Instance.new("UICorner")
-FrameCorner.CornerRadius = UDim.new(0, 5)
-FrameCorner.Parent = MainFrame
-
-local DashBoard = Instance.new("Frame")
-DashBoard.BorderSizePixel = 0
-DashBoard.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
-DashBoard.Size = UDim2.new(0, 109, 0, 240)
-DashBoard.Position = UDim2.new(0.03189, 0, 0.12414, 0)
-DashBoard.BorderColor3 = Color3.fromRGB(0, 0, 0)
-DashBoard.Name = "DashBoard"
-DashBoard.Parent = MainFrame
-
-local DashBoardCorner = Instance.new("UICorner")
-DashBoardCorner.CornerRadius = UDim.new(0, 5)
-DashBoardCorner.Parent = DashBoard
-
-local TabContainer = Instance.new("Frame")
-TabContainer.BorderSizePixel = 0
-TabContainer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TabContainer.Size = UDim2.new(0, 97, 0, 225)
-TabContainer.Position = UDim2.new(0.05505, 0, 0.03481, 0)
-TabContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-TabContainer.Name = "TabContainer"
-TabContainer.BackgroundTransparency = 1
-TabContainer.Parent = DashBoard
-
-local TabContainerLayout = Instance.new("UIListLayout")
-TabContainerLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-TabContainerLayout.Padding = UDim.new(0, 8)
-TabContainerLayout.SortOrder = Enum.SortOrder.LayoutOrder
-TabContainerLayout.Parent = TabContainer
-
-local PageContainer = Instance.new("Frame")
-PageContainer.BorderSizePixel = 0
-PageContainer.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
-PageContainer.Size = UDim2.new(0, 292, 0, 240)
-PageContainer.Position = UDim2.new(1.06422, 0, 0, 0)
-PageContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-PageContainer.Name = "PageContainer"
-PageContainer.Parent = DashBoard
-
-local PageContainerCorner = Instance.new("UICorner")
-PageContainerCorner.CornerRadius = UDim.new(0, 6)
-PageContainerCorner.Parent = PageContainer
-
-local PageFolder = Instance.new("Folder")
-PageFolder.Name = "PageFolder"
-PageFolder.Parent = PageContainer
-
-local TitleContainer = Instance.new("Frame")
-TitleContainer.BorderSizePixel = 0
-TitleContainer.BackgroundColor3 = Color3.fromRGB(16, 16, 16)
-TitleContainer.Size = UDim2.new(0, 406, 0, 15)
-TitleContainer.Position = UDim2.new(0.01835, 0, -0.10155, 0)
-TitleContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-TitleContainer.Name = "TitleContainer"
-TitleContainer.Parent = DashBoard
-
-local TitleHolderCorner = Instance.new("UICorner")
-TitleHolderCorner.CornerRadius = UDim.new(0, 5)
-TitleHolderCorner.Parent = TitleContainer
-
-local Title = Instance.new("TextLabel")
-Title.TextWrapped = true
-Title.BorderSizePixel = 0
-Title.TextXAlignment = Enum.TextXAlignment.Left
-Title.TextScaled = true
-Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Title.TextSize = 14
-Title.FontFace = Font.new("rbxasset://fonts/families/Ubuntu.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
-Title.TextColor3 = HK2.Config.TitleColor
-Title.BackgroundTransparency = 1
-Title.Size = UDim2.new(0, 406, 0, 15)
-Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Title.Text = HK2.Config.Title
-Title.Name = "Title"
-Title.Parent = TitleContainer
 return HK2
