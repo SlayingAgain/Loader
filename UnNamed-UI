@@ -1,4 +1,8 @@
-local Library = {}
+local Library = {
+    Tabs = {},
+    CurrentTab = nil,
+    Open = true
+}
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "Hook"
@@ -367,7 +371,7 @@ function Library:CreateTab(tabName)
         LabelInfo.Parent = LabelHolder
     end
     
-    table.insert(Library.Tabs, Tab)
+    table.insert(self.Tabs, Tab)
     return Tab
 end
 
