@@ -1,4 +1,4 @@
---- Yep
+--- HK2 Concept
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -347,7 +347,6 @@ function HK2:CreateWindow(name)
             local function updateToggle()
                 if toggled then
                     TweenService:Create(ToggleBall, TweenInfo.new(0.2), {Position = UDim2.new(0.545, 0, 0.211, 0)}):Play()
-                    -- No color change as requested
                 else
                     TweenService:Create(ToggleBall, TweenInfo.new(0.2), {Position = UDim2.new(0.206, 0, 0.211, 0)}):Play()
                 end
@@ -657,9 +656,8 @@ function HK2:CreateWindow(name)
                 end
             end
 
-            -- FIXED: Make dropdown button and icon clickable
+            -- FIXED: Only connect to DropdownButton (not ImageLabel)
             DropdownButton.MouseButton1Click:Connect(toggleDropdown)
-            DropdownIcon.MouseButton1Click:Connect(toggleDropdown)
 
             local function updateDropdown()
                 for _, option in pairs(DropdownOptionContainer:GetChildren()) do
