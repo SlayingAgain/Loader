@@ -1,4 +1,4 @@
---- HK2 <333
+--- Yep
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -6,7 +6,6 @@ local RunService = game:GetService("RunService")
 local HK2 = {}
 
 function HK2:CreateWindow(name)
-    -- Your exact UI code
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "HK2"
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -119,7 +118,7 @@ function HK2:CreateWindow(name)
     PageFolder.Name = "PageFolder"
     PageFolder.Parent = PageContainer
 
-    -- Draggable functionality
+    -- Draggable
     local dragging, dragInput, dragStart, startPos
     local function updateInput(input)
         local delta = input.Position - dragStart
@@ -162,9 +161,7 @@ function HK2:CreateWindow(name)
         end
     end)
 
-    local Window = {
-        Tabs = {}
-    }
+    local Window = {}
 
     function Window:AddTab(name)
         local newTab = Instance.new("TextButton")
@@ -220,7 +217,7 @@ function HK2:CreateWindow(name)
             newPage.Visible = true
         end)
 
-        if #Window.Tabs == 0 then
+        if #PageFolder:GetChildren() == 1 then
             newPage.Visible = true
         end
 
@@ -350,10 +347,9 @@ function HK2:CreateWindow(name)
             local function updateToggle()
                 if toggled then
                     TweenService:Create(ToggleBall, TweenInfo.new(0.2), {Position = UDim2.new(0.545, 0, 0.211, 0)}):Play()
-                    TweenService:Create(ToggleFrame, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(138, 247, 255)}):Play()
+                    -- No color change as requested
                 else
                     TweenService:Create(ToggleBall, TweenInfo.new(0.2), {Position = UDim2.new(0.206, 0, 0.211, 0)}):Play()
-                    TweenService:Create(ToggleFrame, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(6, 6, 6)}):Play()
                 end
             end
 
@@ -644,6 +640,27 @@ function HK2:CreateWindow(name)
                 DropdownOptionContainer.CanvasSize = UDim2.new(0, 0, 0, DropdownOptionContainerLayout.AbsoluteContentSize.Y)
             end)
 
+            local isOpen = false
+
+            local function toggleDropdown()
+                isOpen = not isOpen
+                if isOpen then
+                    DropdownContainer.Visible = true
+                    DropdownOptionContainer.Visible = true
+                    DropdownContainer.Size = UDim2.new(0, 288, 0, math.min(#options * 27 + 10, 100))
+                    TweenService:Create(DropdownIcon, TweenInfo.new(0.2), {Rotation = 180}):Play()
+                else
+                    DropdownContainer.Visible = false
+                    DropdownOptionContainer.Visible = false
+                    DropdownContainer.Size = UDim2.new(0, 288, 0, 4)
+                    TweenService:Create(DropdownIcon, TweenInfo.new(0.2), {Rotation = 0}):Play()
+                end
+            end
+
+            -- FIXED: Make dropdown button and icon clickable
+            DropdownButton.MouseButton1Click:Connect(toggleDropdown)
+            DropdownIcon.MouseButton1Click:Connect(toggleDropdown)
+
             local function updateDropdown()
                 for _, option in pairs(DropdownOptionContainer:GetChildren()) do
                     if option:IsA("TextButton") then
@@ -671,23 +688,15 @@ function HK2:CreateWindow(name)
 
                     Option.MouseButton1Click:Connect(function()
                         DropdownTitle.Text = text .. ": " .. option
-                        DropdownContainer.Visible = false
-                        DropdownOptionContainer.Visible = false
+                        toggleDropdown()
                         if callback then
                             callback(option)
                         end
                     end)
                 end
-
-                DropdownContainer.Size = UDim2.new(0, 288, 0, math.min(#options * 27 + 10, 100))
             end
 
             updateDropdown()
-
-            DropdownButton.MouseButton1Click:Connect(function()
-                DropdownContainer.Visible = not DropdownContainer.Visible
-                DropdownOptionContainer.Visible = not DropdownOptionContainer.Visible
-            end)
 
             local DropdownFunctions = {}
             function DropdownFunctions:Set(value)
@@ -760,7 +769,6 @@ function HK2:CreateWindow(name)
             return LabelFunctions
         end
 
-        table.insert(Window.Tabs, Tab)
         return Tab
     end
 
